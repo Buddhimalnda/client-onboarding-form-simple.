@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSearchParams, useRouter } from "next/navigation";
 import { z } from "zod";
+import { format } from "date-fns";
 import {
   onboardingSchema,
   transformOnboardingData,
@@ -28,6 +29,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
@@ -36,7 +43,8 @@ import { Separator } from "@/components/ui/separator";
 import { Status } from "@/config/model";
 import { useAlert } from "@/hooks/useAlert";
 import { useAppDispatch } from "@/store/hooks";
-import { CheckCircle2, Loader2 } from "lucide-react";
+import { CheckCircle2, Loader2, CalendarIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const serviceOptions = ["UI/UX", "Branding", "Web Dev", "Mobile App"] as const;
 
@@ -101,7 +109,7 @@ export default function OnboardingForm({ onBack }: { onBack: () => void }) {
           throw new Error("Onboarding URL not configured");
         }
 
-        const response = await fetch(onboardUrl, {
+        const response = await fetch(onboardUrl + "/onboard", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -117,7 +125,7 @@ export default function OnboardingForm({ onBack }: { onBack: () => void }) {
 
         setSubmittedData(transformedData);
         setSubmitSuccess(true);
-
+        console.log("Onboarding form submitted successfully:", transformedData);
         alert.success("Success", "Onboarding form submitted successfully!");
 
         form.reset();
@@ -147,7 +155,7 @@ export default function OnboardingForm({ onBack }: { onBack: () => void }) {
     return (
       <div className="relative z-10 flex items-center justify-center min-h-screen px-4">
         <Card
-          className="w-full max-w-md mx-auto border-white/10 shadow-2xl animate-fade-in"
+          className="w-full max-w-sm md:max-w-md mx-auto border-white/10 shadow-2xl animate-fade-in"
           style={{
             backdropFilter: "blur(16px)",
             background: "rgba(255, 255, 255, 0.05)",
@@ -203,16 +211,16 @@ export default function OnboardingForm({ onBack }: { onBack: () => void }) {
                     </span>
                   </div>
                   <Separator className="bg-white/10" />
-                  <div className="flex justify-between items-start">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
                     <Label className="text-cyan-400 font-medium">
                       Services:
                     </Label>
-                    <div className="flex flex-wrap gap-1 max-w-48">
+                    <div className="flex flex-wrap gap-1 max-w-full sm:max-w-48">
                       {submittedData.services.map((service) => (
                         <Badge
                           key={service}
                           variant="secondary"
-                          className="bg-cyan-500/20 text-cyan-300 border-cyan-500/30"
+                          className="bg-cyan-500/20 text-cyan-300 border-cyan-500/30 text-xs sm:text-sm"
                         >
                           {service}
                         </Badge>
@@ -267,7 +275,7 @@ export default function OnboardingForm({ onBack }: { onBack: () => void }) {
   return (
     <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-8">
       <Card
-        className="w-full max-w-2xl mx-auto border-white/10 shadow-2xl animate-fade-in"
+        className="w-full max-w-lg md:max-w-2xl mx-auto border-white/10 shadow-2xl animate-fade-in"
         style={{
           backdropFilter: "blur(16px)",
           background: "rgba(255, 255, 255, 0.05)",
@@ -411,12 +419,45 @@ export default function OnboardingForm({ onBack }: { onBack: () => void }) {
                         Project Start Date
                       </FormLabel>
                       <FormControl>
-                        <Input
-                          {...field}
-                          type="date"
-                          min={today}
-                          className="bg-white/10 border-white/20 text-white focus:border-cyan-400 focus:ring-cyan-400/20 h-11 [&::-webkit-calendar-picker-indicator]:invert"
-                        />
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant="outline"
+                              className={cn(
+                                "w-full justify-start text-left font-normal h-11 bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-cyan-400",
+                                !field.value && "text-gray-400"
+                              )}
+                            >
+                              <CalendarIcon className="mr-2 h-4 w-4 text-cyan-400" />
+                              {field.value ? (
+                                format(new Date(field.value), "PPP")
+                              ) : (
+                                <span>Pick a date</span>
+                              )}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent
+                            className="w-auto p-0 bg-gray-900/95 border-white/20 backdrop-blur-sm"
+                            align="start"
+                          >
+                            <Calendar
+                              mode="single"
+                              selected={
+                                field.value ? new Date(field.value) : undefined
+                              }
+                              onSelect={(date) => {
+                                if (date) {
+                                  field.onChange(format(date, "yyyy-MM-dd"));
+                                }
+                              }}
+                              disabled={(date) =>
+                                date < new Date(new Date().setHours(0, 0, 0, 0))
+                              }
+                              initialFocus
+                              className="bg-transparent text-white"
+                            />
+                          </PopoverContent>
+                        </Popover>
                       </FormControl>
                       <FormDescription className="text-gray-400">
                         When would you like to start the project?
