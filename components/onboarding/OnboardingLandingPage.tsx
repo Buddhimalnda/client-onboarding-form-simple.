@@ -74,11 +74,11 @@ const AnimatedGrid: React.FC = () => {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkIfMobile();
-    window.addEventListener('resize', checkIfMobile);
-    
-    return () => window.removeEventListener('resize', checkIfMobile);
+    window.addEventListener("resize", checkIfMobile);
+
+    return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
 
   return (
@@ -157,7 +157,9 @@ const AboutSection: React.FC = () => {
         }}
         className="transform hover:scale-105 transition-all duration-300 p-4 md:p-6"
       >
-        <h2 className="text-lg md:text-2xl font-bold text-white mb-2 md:mb-4">About Us</h2>
+        <h2 className="text-lg md:text-2xl font-bold text-white mb-2 md:mb-4">
+          About Us
+        </h2>
         <p className="text-gray-300 text-xs md:text-sm leading-relaxed mb-4 md:mb-6">
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry's standard dummy text ever
@@ -213,9 +215,7 @@ const OnboardingLandingPage: React.FC = () => {
       <GradientOverlay />
       <DecorativeElements />
       <SideNavigation />
-      {!onBoarding && (
-        <AboutSection />
-      )}
+      {!onBoarding && <AboutSection />}
 
       {onBoarding ? (
         <OnboardingFormWrapper onBack={() => setOnBoarding(false)} />
