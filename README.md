@@ -56,16 +56,6 @@ npm install
 yarn install
 ```
 
-3. **Install shadcn/ui components** (if needed):
-
-```bash
-# Initialize shadcn/ui (already configured)
-npx shadcn@latest init
-
-# Add specific components
-npx shadcn@latest add button card form input calendar popover
-```
-
 4. **Set up environment variables**:
 
 ```bash
