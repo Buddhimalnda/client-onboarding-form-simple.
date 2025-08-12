@@ -1,12 +1,10 @@
 "use client";
 
 import { ThemeProvider } from "@/components/theme-provider";
-import { store } from "@/store";
-import { Provider } from "react-redux";
 import SonnerProvider from "./SonnerProvider";
 import { Toaster } from "@/components/ui/sonner";
-import { useEffect } from "react";
-import { AuthProvider } from "@/contexts/AuthContext";
+import { Provider } from "react-redux";
+import { store } from "@/store";
 
 function ClientProvider({ children }: { children?: React.ReactNode }) {
   return (
@@ -17,11 +15,9 @@ function ClientProvider({ children }: { children?: React.ReactNode }) {
         enableSystem
         disableTransitionOnChange
       >
-        <AuthProvider>
-          <SonnerProvider />
-          <Toaster />
-          {children}
-        </AuthProvider>
+        <SonnerProvider />
+        <Toaster />
+        {children}
       </ThemeProvider>
     </Provider>
   );

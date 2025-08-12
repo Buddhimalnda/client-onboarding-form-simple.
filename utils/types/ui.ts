@@ -3,7 +3,7 @@ export interface Notification{
     title: string
     message: string
     type: 'success' | 'error' | 'info' | 'warning'
-    timestamp: number
+    timestamp: any 
     read: boolean
     action?: () => void
     category?: string

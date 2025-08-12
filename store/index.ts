@@ -1,5 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { authSlice } from './slice/auth/authSlice'
 import { uiSlice } from './slice/ui/uiSlice'
 import { persistenceMiddleware } from './middleware/persistenceMiddleware'
 import { itemsSlice } from './slices/itemsSlice'
@@ -7,7 +6,6 @@ import { itemsSlice } from './slices/itemsSlice'
 
 export const store = configureStore({
   reducer: {
-    auth: authSlice.reducer,
     ui: uiSlice.reducer,
     items: itemsSlice.reducer
   },

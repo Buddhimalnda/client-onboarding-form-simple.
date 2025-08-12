@@ -15,9 +15,6 @@ export function useAlert() {
       type,
       title,
       message,
-      timestamp: Date.now(),
-      read: false,
-      id: Date.now().toString(),
       duration
     }))
   }
