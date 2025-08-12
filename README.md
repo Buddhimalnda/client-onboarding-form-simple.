@@ -453,9 +453,10 @@ yarn start
 
 ## 👨‍💻 Author
 
-**Buddhimal Nanda**  
+**Buddhi malinda**  
 GitHub: [Buddhimalnda](https://github.com/Buddhimalnda)  
 Repository: [client-onboarding-form-simple](https://github.com/Buddhimalnda/client-onboarding-form-simple)
+Wrbsite: [🌐](https://mrrulz.vercel.app)
 
 ---
 
