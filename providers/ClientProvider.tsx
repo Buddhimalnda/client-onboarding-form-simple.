@@ -5,6 +5,8 @@ import { store } from "@/store";
 import { Provider } from "react-redux";
 import SonnerProvider from "./SonnerProvider";
 import { Toaster } from "@/components/ui/sonner";
+import { useEffect } from "react";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 function ClientProvider({ children }: { children?: React.ReactNode }) {
   return (
@@ -15,9 +17,11 @@ function ClientProvider({ children }: { children?: React.ReactNode }) {
         enableSystem
         disableTransitionOnChange
       >
-        <SonnerProvider />
-        <Toaster />
-        {children}
+        <AuthProvider>
+          <SonnerProvider />
+          <Toaster />
+          {children}
+        </AuthProvider>
       </ThemeProvider>
     </Provider>
   );
